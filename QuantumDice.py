@@ -5,6 +5,7 @@ from qiskit.providers.aer.noise import NoiseModel
 from random import shuffle
 import pygame as pg
 import math
+import time
 
 runOnQuantumComputer=False
 
@@ -99,7 +100,7 @@ def GetRandom():
                 return(ans)
                 break
 
-IBMQ.enable_account('ADD YOUT KEY HERE')
+IBMQ.enable_account('ADD YOUR KEY')
 
 pg.init()
 pg.display.set_caption('Quantum Dice')
@@ -146,7 +147,7 @@ generateNew=True
 newNumberTimer=0.0
 minWaitTime=1
 framesSameNumerPresent=0
-waitFrames=90
+waitFrames=75
 
 run=True
 while run:
@@ -186,12 +187,15 @@ while run:
                     print("Generate new random number")
                     screen.fill(COLOR_BLUE)
                     pg.display.flip()
-                    pg.mixer.music.play(-1)
+                    if runOnQuantumComputer:
+                        pg.mixer.music.play(-1)
                     randonNumber=GetRandom()
-                    pg.mixer.music.stop()
-                    newNumberTimer=0
+                    if runOnQuantumComputer:
+                        pg.mixer.music.stop()
+                        time.sleep(2)
                     print(randonNumber)
                     DICE_NUMBERS[randonNumber].play()
+                    newNumberTimer=0
             else:
                 if generateNew==False:
                     print("Reset")
